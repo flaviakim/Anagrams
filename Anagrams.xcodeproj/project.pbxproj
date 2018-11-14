@@ -7,21 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E7C9A8B219C8B9800548780 /* randomWords.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6E7C9A8A219C8B9800548780 /* randomWords.txt */; };
+		6E7C9A8D219CA1FC00548780 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C9A8C219CA1FC00548780 /* Settings.swift */; };
+		6E7C9A8F219CB54800548780 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C9A8E219CB54800548780 /* NavigationController.swift */; };
 		6E89EA4B219C240A00F7E7CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E89EA4A219C240A00F7E7CC /* AppDelegate.swift */; };
-		6E89EA4D219C240A00F7E7CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E89EA4C219C240A00F7E7CC /* ViewController.swift */; };
 		6E89EA50219C240A00F7E7CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E89EA4E219C240A00F7E7CC /* Main.storyboard */; };
 		6E89EA52219C240B00F7E7CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E89EA51219C240B00F7E7CC /* Assets.xcassets */; };
 		6E89EA55219C240B00F7E7CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E89EA53219C240B00F7E7CC /* LaunchScreen.storyboard */; };
+		6E89EA5D219C248A00F7E7CC /* WordSelectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E89EA5C219C248A00F7E7CC /* WordSelectionTableViewController.swift */; };
+		6E89EA5F219C249A00F7E7CC /* MainGameTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E89EA5E219C249A00F7E7CC /* MainGameTableViewController.swift */; };
+		6E89EA61219C257B00F7E7CC /* HighscoreCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E89EA60219C257B00F7E7CC /* HighscoreCounter.swift */; };
+		6E89EA63219C386300F7E7CC /* Highscore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E89EA62219C386300F7E7CC /* Highscore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6E7C9A8A219C8B9800548780 /* randomWords.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = randomWords.txt; sourceTree = "<group>"; };
+		6E7C9A8C219CA1FC00548780 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		6E7C9A8E219CB54800548780 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		6E89EA47219C240A00F7E7CC /* Anagrams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Anagrams.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E89EA4A219C240A00F7E7CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6E89EA4C219C240A00F7E7CC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6E89EA4F219C240A00F7E7CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6E89EA51219C240B00F7E7CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6E89EA54219C240B00F7E7CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6E89EA56219C240B00F7E7CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E89EA5C219C248A00F7E7CC /* WordSelectionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSelectionTableViewController.swift; sourceTree = "<group>"; };
+		6E89EA5E219C249A00F7E7CC /* MainGameTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameTableViewController.swift; sourceTree = "<group>"; };
+		6E89EA60219C257B00F7E7CC /* HighscoreCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighscoreCounter.swift; sourceTree = "<group>"; };
+		6E89EA62219C386300F7E7CC /* Highscore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Highscore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,10 +67,16 @@
 			isa = PBXGroup;
 			children = (
 				6E89EA4A219C240A00F7E7CC /* AppDelegate.swift */,
-				6E89EA4C219C240A00F7E7CC /* ViewController.swift */,
 				6E89EA4E219C240A00F7E7CC /* Main.storyboard */,
+				6E89EA5E219C249A00F7E7CC /* MainGameTableViewController.swift */,
+				6E7C9A8E219CB54800548780 /* NavigationController.swift */,
+				6E89EA5C219C248A00F7E7CC /* WordSelectionTableViewController.swift */,
+				6E7C9A8C219CA1FC00548780 /* Settings.swift */,
+				6E89EA60219C257B00F7E7CC /* HighscoreCounter.swift */,
+				6E89EA62219C386300F7E7CC /* Highscore.swift */,
 				6E89EA51219C240B00F7E7CC /* Assets.xcassets */,
 				6E89EA53219C240B00F7E7CC /* LaunchScreen.storyboard */,
+				6E7C9A8A219C8B9800548780 /* randomWords.txt */,
 				6E89EA56219C240B00F7E7CC /* Info.plist */,
 			);
 			path = Anagrams;
@@ -123,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E89EA55219C240B00F7E7CC /* LaunchScreen.storyboard in Resources */,
+				6E7C9A8B219C8B9800548780 /* randomWords.txt in Resources */,
 				6E89EA52219C240B00F7E7CC /* Assets.xcassets in Resources */,
 				6E89EA50219C240A00F7E7CC /* Main.storyboard in Resources */,
 			);
@@ -135,8 +154,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E89EA4D219C240A00F7E7CC /* ViewController.swift in Sources */,
+				6E7C9A8D219CA1FC00548780 /* Settings.swift in Sources */,
+				6E89EA5D219C248A00F7E7CC /* WordSelectionTableViewController.swift in Sources */,
+				6E89EA61219C257B00F7E7CC /* HighscoreCounter.swift in Sources */,
 				6E89EA4B219C240A00F7E7CC /* AppDelegate.swift in Sources */,
+				6E89EA5F219C249A00F7E7CC /* MainGameTableViewController.swift in Sources */,
+				6E7C9A8F219CB54800548780 /* NavigationController.swift in Sources */,
+				6E89EA63219C386300F7E7CC /* Highscore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -123,7 +123,9 @@ class MainGameTableViewController: UITableViewController {
 	}
 	
 	private func congratulateAboutNewHighscore() {
-		
+		let ac = UIAlertController(title: "🎊Congratulation!🎊", message: "You beat the previous highscore!👏", preferredStyle: .alert)
+		ac.addAction(UIAlertAction(title: "Yeah!", style: .default))
+		present(ac, animated: true)
 	}
 	
 	

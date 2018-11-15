@@ -59,6 +59,12 @@ class WordSelectionTableViewController: UITableViewController {
 		loadRandomWords()
 		removeUsedRandomWords()
 		
+		askAboutName()
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		tableView.reloadData()
 	}
 	
 	private func loadRandomWords() {
@@ -92,7 +98,6 @@ class WordSelectionTableViewController: UITableViewController {
 				if !newName.isEmpty {
 					self.setPlayerName(newName: newName)
 				}
-				self.tableView.reloadData()
 			}
 		})
 		ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
@@ -157,23 +162,8 @@ class WordSelectionTableViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if let mainGameVC = storyboard?.instantiateViewController(withIdentifier: "Game") as? MainGameTableViewController {
-			mainGameVC.wordSelectionTVC = self
-			if indexPath.section == 0 {
-				if indexPath.row == 0 {
-					mainGameVC.title = getRandomWord()
-				} else if indexPath.row == 1 {
-					// if we don't set the title of the mainGameVC it should ask the user automaticaly
-				}
-				mainGameVC.isNewWord = true
-			} else if indexPath.section == 1 {
-				let hs = highscoreCounter!.getHighscore(at: indexPath.row)!
-				mainGameVC.title = hs.word
-				mainGameVC.oldHighscore = hs.score
-				mainGameVC.isNewWord = false
-			}
-			navigationController?.pushViewController(mainGameVC, animated: true)
-		}
+		performSegue(withIdentifier: "MainGameTVC", sender: self)
+		
 	}
 	
 	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -214,13 +204,30 @@ class WordSelectionTableViewController: UITableViewController {
 	// MARK: - Navigation
 	
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
-	/*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "MainGameTVC" {
+			if let mainGameVC = segue.destination as? MainGameTableViewController {
+				mainGameVC.wordSelectionTVC = self
+				if let indexPath = tableView.indexPathForSelectedRow {
+					if indexPath.section == 0 {
+						if indexPath.row == 0 {
+							mainGameVC.title = getRandomWord()
+						} else if indexPath.row == 1 {
+							// if we don't set the title of the mainGameVC it should ask the user automaticaly so we don't do anything.
+						}
+						mainGameVC.isNewWord = true
+					} else if indexPath.section == 1 {
+						let hs = highscoreCounter!.getHighscore(at: indexPath.row)!
+						mainGameVC.title = hs.word
+						mainGameVC.oldHighscore = hs
+						mainGameVC.isNewWord = false
+					}
+				}
+			}
+		}
 		// Get the new view controller using segue.destination.
 		// Pass the selected object to the new view controller.
-		if let mainGameTVC = segue.destination as? MainGameTableViewController {
-			mainGameTVC.wordSelectionTVC = self
-		}
-	}*/
+	}
 	
 	
 }

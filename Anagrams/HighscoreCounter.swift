@@ -15,8 +15,6 @@ class HighscoreCounter: NSObject, NSCoding {
 	override init() {
 		super.init()
 		//only for testing
-		addHighscore(for: Highscore(word: "androgyn", score: 5, name: "Flavia"))
-		addHighscore(for: Highscore(word: "helloworld", score: 6, name: "Flavia"))
 	}
 	
 	// MARK: NSCoding

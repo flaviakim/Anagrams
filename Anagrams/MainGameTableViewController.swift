@@ -30,7 +30,6 @@ class MainGameTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		// TODO: if title doesn't exist, ask user for custom word.
 		if title == nil || title!.isEmpty {
 			askForCustomWord()
 		}
@@ -103,7 +102,6 @@ class MainGameTableViewController: UITableViewController {
 		tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
 		
 		handleHighscore(forNewWord: word)
-		// TODO: save highscore if new or changed
 		// TODO: tell about highscore if changed
 	}
 	
@@ -242,6 +240,7 @@ class MainGameTableViewController: UITableViewController {
 	
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		print("preparing for segue: destination: \(segue.destination); sender: \(sender)")
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
 		wordSelectionTVC!.tableView.reloadData()

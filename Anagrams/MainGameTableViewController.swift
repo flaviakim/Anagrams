@@ -30,7 +30,7 @@ class MainGameTableViewController: UITableViewController {
 	
 	var isSamePlayerAsOldHighscore: Bool {
 		get {
-			return oldHighscore?.name == settings?.playerName
+			return oldHighscore?.player == settings?.playerName
 		}
 	}
 	
@@ -123,15 +123,15 @@ class MainGameTableViewController: UITableViewController {
 	private func handleHighscore(forNewWord: String) {
 		let word = title!
 		let score = answers.count
-		let name = wordSelectionTVC!.getPlayerName()
+		let player = wordSelectionTVC!.getPlayerName()
 		if isNewWord {
-			wordSelectionTVC!.highscoreCounter!.addHighscore(word: word, score: score, name: name)
+			wordSelectionTVC!.highscoreCounter!.addHighscore(word: word, score: score, player: player)
 		} else {
 			if newHighscore != nil {
 				if newHighscore == oldHighscore!.score + 1 {
 					congratulateAboutNewHighscore()
 				}
-				wordSelectionTVC!.highscoreCounter!.addHighscore(word: word, score: score, name: name)
+				wordSelectionTVC!.highscoreCounter!.addHighscore(word: word, score: score, player: player)
 			}
 		}
 	}

@@ -13,17 +13,17 @@ class Highscore: NSObject, NSCoding {
 	// MARK: Data
 	
 	let word: String
-	var score: Int
-	var name: String
+	private(set) var score: Int
+	private(set) var player: String
 	
 	private(set) var guessedWords = [String: [String]]()
 	
 	// MARK: Initialiser
 	
-	init(word: String, score: Int, name: String) {
+	init(word: String, score: Int, player: String) {
 		self.word = word
 		self.score = score
-		self.name = name
+		self.player = player
 	}
 	
 	
@@ -32,7 +32,7 @@ class Highscore: NSObject, NSCoding {
 	required init?(coder aDecoder: NSCoder) {
 		self.word = aDecoder.decodeObject(forKey: "word") as! String
 		self.score = aDecoder.decodeInteger(forKey: "score")
-		self.name = aDecoder.decodeObject(forKey: "name") as! String
+		self.player = aDecoder.decodeObject(forKey: "player") as! String
 		self.guessedWords = aDecoder.decodeObject(forKey: "guessedWords") as? [String: [String]] ?? [String: [String]]()
 		// TODO: Save guessedWords correctly
 	}
@@ -40,7 +40,7 @@ class Highscore: NSObject, NSCoding {
 	func encode(with aCoder: NSCoder) {
 		aCoder.encode(word, forKey: "word")
 		aCoder.encode(score, forKey: "score")
-		aCoder.encode(name, forKey: "name")
+		aCoder.encode(player, forKey: "player")
 		aCoder.encode(guessedWords, forKey: "guessedWords")
 	}
 	
@@ -69,14 +69,14 @@ class Highscore: NSObject, NSCoding {
 			print("ERROR: Highscore added would have been lower. New: score: \(score), player: \(player). Old: \(self)")
 			return
 		}
-		self.name = player
+		self.player = player
 		self.score = score
 	}
 	
 	// MARK: Helper functions
 	
 	override public var description: String {
-		return "word: \(word); score: \(score); name: \(name)"
+		return "word: \(word); score: \(score); player: \(player)"
 	}
 	
 }

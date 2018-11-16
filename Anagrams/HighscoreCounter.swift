@@ -65,12 +65,12 @@ class HighscoreCounter: NSObject, NSCoding {
 	Adds the highscore to the list of highscore or updates the existing one if there is already a highscore for that word.
 	TODO: Try to link to comment of other function instead of duplicating it.
 	*/
-	func addHighscore(word: String, score: Int, name: String) {
+	func addHighscore(word: String, score: Int, player: String) {
 		if let oldHighscore = getHighscoreFor(word: word) {
-			oldHighscore.updateHighscore(player: name, score: score)
+			oldHighscore.updateHighscore(player: player, score: score)
 			//TODO: sort the updated highscore.
 		} else {
-			highscores.append(Highscore(word: word, score: score, name: name))
+			highscores.append(Highscore(word: word, score: score, player: player))
 			//TODO: add at correct place according to sort order (by word or by score)
 		}
 	}

@@ -145,9 +145,9 @@ class WordSelectionTableViewController: UITableViewController {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "WordSelectionCell", for: indexPath)
 			if let hs = highscoreCounter!.getHighscore(at: indexPath.row) {
 				cell.textLabel?.text = hs.word
-				cell.detailTextLabel?.text = "highscore: \(hs.score) by \(hs.name)"
+				cell.detailTextLabel?.text = "highscore: \(hs.score) by \(hs.player)"
 				if settings.colorCodeLinesForPlayer {
-					if hs.name == getPlayerName() {
+					if hs.player == getPlayerName() {
 						cell.backgroundColor = UIColor(red: 0.95, green: 1, blue: 0.95, alpha: 1)
 					} else {
 						cell.backgroundColor = UIColor(red: 1, green: 0.92, blue: 0.92, alpha: 1)

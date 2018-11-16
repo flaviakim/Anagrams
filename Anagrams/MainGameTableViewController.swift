@@ -12,16 +12,25 @@ class MainGameTableViewController: UITableViewController {
 	
 	var wordSelectionTVC: WordSelectionTableViewController?
 	var isNewWord: Bool!
-	var oldHighscore = 0
+	var oldHighscore: Highscore?
+	var settings: Settings? {
+		return wordSelectionTVC?.settings
+	}
 	
 	/// Returns the new highscore if it is higher than the old, `nil` otherwise.
 	var newHighscore: Int? {
 		get {
-			if answers.count <= oldHighscore {
+			if oldHighscore == nil || answers.count <= oldHighscore!.score {
 				return nil
 			} else {
 				return answers.count
 			}
+		}
+	}
+	
+	var isSamePlayerAsOldHighscore: Bool {
+		get {
+			return oldHighscore?.name == settings?.playerName
 		}
 	}
 	
@@ -35,6 +44,10 @@ class MainGameTableViewController: UITableViewController {
 		}
 		
 		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(askForNewWord))
+		
+		if let title = title {
+			answers = wordSelectionTVC?.highscoreCounter?.getAllGuessedWordsFor(player: settings!.playerName, highscoreWord: title) ?? [String]()
+		}
 		
     }
 	
@@ -102,6 +115,8 @@ class MainGameTableViewController: UITableViewController {
 		tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
 		
 		handleHighscore(forNewWord: word)
+		wordSelectionTVC!.highscoreCounter!.addGuessedWord(player: settings!.playerName, highscoreWord: title!, guessedWord: word)
+		wordSelectionTVC!.save()
 		// TODO: tell about highscore if changed
 	}
 	
@@ -111,10 +126,9 @@ class MainGameTableViewController: UITableViewController {
 		let name = wordSelectionTVC!.getPlayerName()
 		if isNewWord {
 			wordSelectionTVC!.highscoreCounter!.addHighscore(word: word, score: score, name: name)
-			wordSelectionTVC!.save()
 		} else {
 			if newHighscore != nil {
-				if newHighscore == oldHighscore + 1 {
+				if newHighscore == oldHighscore!.score + 1 {
 					congratulateAboutNewHighscore()
 				}
 				wordSelectionTVC!.highscoreCounter!.addHighscore(word: word, score: score, name: name)
@@ -242,7 +256,7 @@ class MainGameTableViewController: UITableViewController {
 	
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		print("preparing for segue: destination: \(segue.destination); sender: \(sender)")
+		//print("preparing for segue: destination: \(segue.destination); sender: \(sender)")
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
 		wordSelectionTVC!.tableView.reloadData()

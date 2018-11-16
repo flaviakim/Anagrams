@@ -62,27 +62,17 @@ class HighscoreCounter: NSObject, NSCoding {
 	}
 	
 	/**
-	Adds the highscore to the list of highscore. Deletes any previous highscore with the same word.
+	Adds the highscore to the list of highscore or updates the existing one if there is already a highscore for that word.
 	TODO: Try to link to comment of other function instead of duplicating it.
 	*/
 	func addHighscore(word: String, score: Int, name: String) {
-		addHighscore(for: Highscore(word: word, score: score, name: name))
-	}
-	
-	/**
-	Adds the highscore to the list of highscore. Deletes any previous highscore with the same word.
-	*/
-	func addHighscore(for highscore: Highscore) {
-		if let currentHighscore = getHighscoreFor(word: highscore.word)?.score {
-			if currentHighscore >= highscore.score {
-				print("Highscore added would have been lower. New: \(highscore). Old: \(currentHighscore)")
-				return
-			}
+		if let oldHighscore = getHighscoreFor(word: word) {
+			oldHighscore.updateHighscore(player: name, score: score)
+			//TODO: sort the updated highscore.
+		} else {
+			highscores.append(Highscore(word: word, score: score, name: name))
+			//TODO: add at correct place according to sort order (by word or by score)
 		}
-		removeHighscore(for: highscore.word)
-		highscores.append(highscore)
-		//TODO: save persistent
-		//TODO: add at correct place according to sort order (by word or by score)
 	}
 	
 	/**
@@ -91,16 +81,36 @@ class HighscoreCounter: NSObject, NSCoding {
 	- Parameter word: The word you want to delete from the highscore list.
 	- Returns: `true` if the word was in the highscore list and successfully deleted, `false` otherwise.
 	*/
-	func removeHighscore(for word: String) -> Bool {
+	func removeHighscore(for word: String) -> Highscore? {
 		if let index = getIndexOfHighscoreFor(word: word) {
+			let hs = highscores[index]
 			removeHighscore(at: index)
-			return true
+			return hs
 		}
-		return false
+		return nil
 	}
 	
 	func removeHighscore(at index: Int) {
 		highscores.remove(at: index)
+	}
+	
+	func addGuessedWord(player: String, highscoreWord: String, guessedWord: String) {
+		if let hs = getHighscoreFor(word: highscoreWord) {
+			hs.addGuessedWord(player: player, word: guessedWord)
+		} else {
+			print("ERROR: addGuessedWordFor - Highscore word doesn't exist!")
+		}
+	}
+	
+	func addGuessedWords(player: String, highscoreWord: String, guessedWords: [String]) {
+		for word in guessedWords {
+			addGuessedWord(player: player, highscoreWord: highscoreWord, guessedWord: word)
+			// TODO: could be more efficient if getHighscoreFor in addGuessedWord would only have to be called once.
+		}
+	}
+	
+	func getAllGuessedWordsFor(player: String, highscoreWord: String) -> [String]? {
+		return getHighscoreFor(word: highscoreWord)?.getAllGuessedWordsFor(player: player)
 	}
 	
 	//MARK: private functions

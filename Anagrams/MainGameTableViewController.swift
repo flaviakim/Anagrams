@@ -61,45 +61,49 @@ class MainGameTableViewController: UITableViewController {
 				// TODO: say text needs to be at least 5 letters
 				self.title = self.wordSelectionTVC!.getRandomWord()
 			} else {
-				self.title = textFieldText!.lowercased()
-				let checker = UITextChecker()
-				let range = NSMakeRange(0, textFieldText!.utf16.count)
-				let languages = Language.allLanguages
-				var languagesPossible = [Language]()
-				for language in languages {
-					if checker.rangeOfMisspelledWord(in: textFieldText!, range: range, startingAt: 0, wrap: false, language: language.shortWord).location == NSNotFound {
-						languagesPossible.append(language)
-					}
-				}
-				if languagesPossible.count == 1 {
-					self.language = languagesPossible[0]
-					let acLanguageDetected = UIAlertController(title: "You're playing in \(self.language.longWord)", message: nil, preferredStyle: .alert)
-					acLanguageDetected.addAction(UIAlertAction(title: "OK", style: .default))
-					self.present(acLanguageDetected, animated: true)
-				} else {
-					var title: String
-					var message: String
-					var data: [Language]
-					if languagesPossible.count == 0 {
-						title = "Language not recognised"
-						message = "This word doesn't exist in the languages supported by this app. Please choose your language to play in:"
-						data = Language.allLanguages
-					} else {
-						title = "Choose a language"
-						message = "This word exists in multiple languages. Please choose in which you would like to play in:"
-						data = languagesPossible
-					}
-					let acLanguageChooser = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-					for (i, language) in data.enumerated() {
-						acLanguageChooser.addAction(UIAlertAction(title: language.longWord, style: .default) { [unowned self, data] action in
-							self.language = data[i]
-						})
-					}
-					self.present(acLanguageChooser, animated: true)
-				}
+				self.title = textFieldText!
+				self.getLanguage(word: textFieldText!)
 			}
 		})
 		present(ac, animated: true)
+	}
+	
+	private func getLanguage(word: String) {
+		let checker = UITextChecker()
+		let range = NSMakeRange(0, word.utf16.count)
+		let languages = Language.allLanguages
+		var languagesPossible = [Language]()
+		for language in languages {
+			if checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: language.shortWord).location == NSNotFound {
+				languagesPossible.append(language)
+			}
+		}
+		if languagesPossible.count == 1 {
+			self.language = languagesPossible[0]
+			let acLanguageDetected = UIAlertController(title: "You're playing in \(self.language.longWord)", message: nil, preferredStyle: .alert)
+			acLanguageDetected.addAction(UIAlertAction(title: "OK", style: .default))
+			self.present(acLanguageDetected, animated: true)
+		} else {
+			var title: String
+			var message: String
+			var data: [Language]
+			if languagesPossible.count == 0 {
+				title = "Language not recognised"
+				message = "This word doesn't exist in the languages supported by this app. Please choose your language to play in:"
+				data = Language.allLanguages
+			} else {
+				title = "Choose a language"
+				message = "This word exists in multiple languages. Please choose in which you would like to play in:"
+				data = languagesPossible
+			}
+			let acLanguageChooser = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+			for (i, language) in data.enumerated() {
+				acLanguageChooser.addAction(UIAlertAction(title: language.longWord, style: .default) { [unowned self, data] action in
+					self.language = data[i]
+				})
+			}
+			self.present(acLanguageChooser, animated: true)
+		}
 	}
 	
 	@objc private func askForNewWord() {
@@ -116,13 +120,12 @@ class MainGameTableViewController: UITableViewController {
 		if answer.isEmpty {
 			return
 		}
-		let lowercaseAnswer = answer.lowercased()
 		
-		if isPossible(word: lowercaseAnswer) {
-			if isOriginal(originalCaseWord: answer) {
-				if isReal(word: lowercaseAnswer, originalCaseWord: answer) {
-					if isLongEnough(word: lowercaseAnswer) {
-						if isNotSameWord(word: lowercaseAnswer) {
+		if isPossible(word: answer) {
+			if isOriginal(word: answer) {
+				if isReal(word: answer) {
+					if isLongEnough(word: answer) {
+						if isNotSameWord(word: answer) {
 							addNewWord(word: answer)
 							return
 						} else {
@@ -182,6 +185,7 @@ class MainGameTableViewController: UITableViewController {
 	// MARK: answer checking
 	
 	private func isPossible(word: String) -> Bool {
+		// TODO: Ignore ^ and ` and all these extra things on top of letters so it works better in languages like French
 		let lowercasedWord = word.lowercased()
 		var allPossibleLetters = title!.lowercased()
 		
@@ -196,15 +200,16 @@ class MainGameTableViewController: UITableViewController {
 		return true
 	}
 	
-	private func isOriginal(originalCaseWord: String) -> Bool {
-		return !answers.contains(originalCaseWord)
+	private func isOriginal(word: String) -> Bool {
+		return !answers.contains(word)
 	}
 	
-	private func isReal(word: String, originalCaseWord: String) -> Bool {
+	private func isReal(word: String) -> Bool {
+		let lowercasedWord = word.lowercased()
 		let checker = UITextChecker()
 		let range = NSMakeRange(0, word.utf16.count)
-		let misspelledRangeLower = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: language.shortWord)
-		let misspelledRangeUpper = checker.rangeOfMisspelledWord(in: originalCaseWord, range: range, startingAt: 0, wrap: false, language: language.shortWord)
+		let misspelledRangeLower = checker.rangeOfMisspelledWord(in: lowercasedWord, range: range, startingAt: 0, wrap: false, language: language.shortWord)
+		let misspelledRangeUpper = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: language.shortWord)
 		
 		return misspelledRangeLower.location == NSNotFound || misspelledRangeUpper.location == NSNotFound
 	}

@@ -55,12 +55,6 @@ class MainGameTableViewController: UITableViewController {
 	private func askForCustomWord() {
 		let ac = UIAlertController(title: "Set your word", message: "It should be at least 5 letters long.", preferredStyle: .alert)
 		ac.addTextField()
-		/*let picker = UIPickerView()
-		picker.dataSource = wordSelectionTVC! // TODO: Move to self
-		picker.delegate = wordSelectionTVC!
-		let vc = UIViewController()
-		vc.view.addSubview(picker)
-		ac.addChild(vc)*/
 		ac.addAction(UIAlertAction(title: "OK", style: .default) { [unowned self, ac] action in
 			let textFieldText = ac.textFields![0].text
 			if textFieldText == nil || textFieldText!.count < 5 {
@@ -68,18 +62,40 @@ class MainGameTableViewController: UITableViewController {
 				self.title = self.wordSelectionTVC!.getRandomWord()
 			} else {
 				self.title = textFieldText!.lowercased()
-				//language = settings?.language.rawValue ?? "en"
 				let checker = UITextChecker()
 				let range = NSMakeRange(0, textFieldText!.utf16.count)
 				let languages = Language.allLanguages
+				var languagesPossible = [Language]()
 				for language in languages {
 					if checker.rangeOfMisspelledWord(in: textFieldText!, range: range, startingAt: 0, wrap: false, language: language.shortWord).location == NSNotFound {
-						self.language = language
-						let ac2 = UIAlertController(title: "You're playing in \(language.longWord)", message: nil, preferredStyle: .alert)
-						ac2.addAction(UIAlertAction(title: "OK", style: .default))
-						self.present(ac2, animated: true)
-						return
+						languagesPossible.append(language)
 					}
+				}
+				if languagesPossible.count == 1 {
+					self.language = languagesPossible[0]
+					let acLanguageDetected = UIAlertController(title: "You're playing in \(self.language.longWord)", message: nil, preferredStyle: .alert)
+					acLanguageDetected.addAction(UIAlertAction(title: "OK", style: .default))
+					self.present(acLanguageDetected, animated: true)
+				} else {
+					var title: String
+					var message: String
+					var data: [Language]
+					if languagesPossible.count == 0 {
+						title = "Language not recognised"
+						message = "This word doesn't exist in the languages supported by this app. Please choose your language to play in:"
+						data = Language.allLanguages
+					} else {
+						title = "Choose a language"
+						message = "This word exists in multiple languages. Please choose in which you would like to play in:"
+						data = languagesPossible
+					}
+					let acLanguageChooser = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+					for (i, language) in data.enumerated() {
+						acLanguageChooser.addAction(UIAlertAction(title: language.longWord, style: .default) { [unowned self, data] action in
+							self.language = data[i]
+						})
+					}
+					self.present(acLanguageChooser, animated: true)
 				}
 			}
 		})

@@ -65,13 +65,23 @@ class HighscoreCounter: NSObject, NSCoding {
 	Adds the highscore to the list of highscore or updates the existing one if there is already a highscore for that word.
 	TODO: Try to link to comment of other function instead of duplicating it.
 	*/
-	func addHighscore(word: String, score: Int, player: String) {
+	func addHighscore(word: String, score: Int, player: String, language: Language = Language.getDefaultLanguage()) {
+		if let oldHighscore = getHighscoreFor(word: word) {
+			oldHighscore.updateHighscore(player: player, score: score)
+			print("WARNING: Switch to updateHighscore instead of this function if you want to update the highscore!")
+			//TODO: sort the updated highscore.
+		} else {
+			highscores.append(Highscore(word: word, score: score, player: player, language: language))
+			//TODO: add at correct place according to sort order (by word or by score)
+		}
+	}
+	
+	func updateHighscore(word: String, score: Int, player: String) {
 		if let oldHighscore = getHighscoreFor(word: word) {
 			oldHighscore.updateHighscore(player: player, score: score)
 			//TODO: sort the updated highscore.
 		} else {
-			highscores.append(Highscore(word: word, score: score, player: player))
-			//TODO: add at correct place according to sort order (by word or by score)
+			print("ERROR: HighscoreCounter::updateHighscore. Highscore doesn't exist yet.")
 		}
 	}
 	

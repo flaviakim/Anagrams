@@ -16,6 +16,7 @@ class MainGameTableViewController: UITableViewController {
 	var settings: Settings? {
 		return wordSelectionTVC?.settings
 	}
+	var language = Language.getDefaultLanguage()
 	
 	/// Returns the new highscore if it is higher than the old, `nil` otherwise.
 	var newHighscore: Int? {
@@ -54,13 +55,32 @@ class MainGameTableViewController: UITableViewController {
 	private func askForCustomWord() {
 		let ac = UIAlertController(title: "Set your word", message: "It should be at least 5 letters long.", preferredStyle: .alert)
 		ac.addTextField()
+		/*let picker = UIPickerView()
+		picker.dataSource = wordSelectionTVC! // TODO: Move to self
+		picker.delegate = wordSelectionTVC!
+		let vc = UIViewController()
+		vc.view.addSubview(picker)
+		ac.addChild(vc)*/
 		ac.addAction(UIAlertAction(title: "OK", style: .default) { [unowned self, ac] action in
 			let textFieldText = ac.textFields![0].text
 			if textFieldText == nil || textFieldText!.count < 5 {
 				// TODO: say text needs to be at least 5 letters
 				self.title = self.wordSelectionTVC!.getRandomWord()
 			} else {
-				self.title = textFieldText!
+				self.title = textFieldText!.lowercased()
+				//language = settings?.language.rawValue ?? "en"
+				let checker = UITextChecker()
+				let range = NSMakeRange(0, textFieldText!.utf16.count)
+				let languages = Language.allLanguages
+				for language in languages {
+					if checker.rangeOfMisspelledWord(in: textFieldText!, range: range, startingAt: 0, wrap: false, language: language.shortWord).location == NSNotFound {
+						self.language = language
+						let ac2 = UIAlertController(title: "You're playing in \(language.longWord)", message: nil, preferredStyle: .alert)
+						ac2.addAction(UIAlertAction(title: "OK", style: .default))
+						self.present(ac2, animated: true)
+						return
+					}
+				}
 			}
 		})
 		present(ac, animated: true)
@@ -83,8 +103,8 @@ class MainGameTableViewController: UITableViewController {
 		let lowercaseAnswer = answer.lowercased()
 		
 		if isPossible(word: lowercaseAnswer) {
-			if isOriginal(word: lowercaseAnswer) {
-				if isReal(word: lowercaseAnswer) {
+			if isOriginal(originalCaseWord: answer) {
+				if isReal(word: lowercaseAnswer, originalCaseWord: answer) {
 					if isLongEnough(word: lowercaseAnswer) {
 						if isNotSameWord(word: lowercaseAnswer) {
 							addNewWord(word: answer)
@@ -125,13 +145,13 @@ class MainGameTableViewController: UITableViewController {
 		let score = answers.count
 		let player = wordSelectionTVC!.getPlayerName()
 		if isNewWord {
-			wordSelectionTVC!.highscoreCounter!.addHighscore(word: word, score: score, player: player)
+			wordSelectionTVC!.highscoreCounter!.addHighscore(word: word, score: score, player: player, language: language)
 		} else {
 			if newHighscore != nil {
 				if newHighscore == oldHighscore!.score + 1 {
 					congratulateAboutNewHighscore()
 				}
-				wordSelectionTVC!.highscoreCounter!.addHighscore(word: word, score: score, player: player)
+				wordSelectionTVC!.highscoreCounter!.updateHighscore(word: word, score: score, player: player)
 			}
 		}
 	}
@@ -160,16 +180,17 @@ class MainGameTableViewController: UITableViewController {
 		return true
 	}
 	
-	private func isOriginal(word: String) -> Bool {
-		return !answers.contains(word)
+	private func isOriginal(originalCaseWord: String) -> Bool {
+		return !answers.contains(originalCaseWord)
 	}
 	
-	private func isReal(word: String) -> Bool {
+	private func isReal(word: String, originalCaseWord: String) -> Bool {
 		let checker = UITextChecker()
 		let range = NSMakeRange(0, word.utf16.count)
-		let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
+		let misspelledRangeLower = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: language.shortWord)
+		let misspelledRangeUpper = checker.rangeOfMisspelledWord(in: originalCaseWord, range: range, startingAt: 0, wrap: false, language: language.shortWord)
 		
-		return misspelledRange.location == NSNotFound
+		return misspelledRangeLower.location == NSNotFound || misspelledRangeUpper.location == NSNotFound
 	}
 	
 	private func isLongEnough(word: String) -> Bool {

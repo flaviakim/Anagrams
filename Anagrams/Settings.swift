@@ -13,5 +13,6 @@ class Settings {
 	var colorCodeLinesForPlayer = true
 	
 	var playerName: String = "Select Name"
+	// TODO (maybe): make a player class instead of strings.
 
 }

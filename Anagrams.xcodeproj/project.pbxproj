@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E36BEB7219F3D33008A03FE /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E36BEB6219F3D33008A03FE /* Language.swift */; };
 		6E7C9A8B219C8B9800548780 /* randomWords.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6E7C9A8A219C8B9800548780 /* randomWords.txt */; };
 		6E7C9A8D219CA1FC00548780 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C9A8C219CA1FC00548780 /* Settings.swift */; };
 		6E89EA4B219C240A00F7E7CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E89EA4A219C240A00F7E7CC /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6E36BEB6219F3D33008A03FE /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		6E7C9A8A219C8B9800548780 /* randomWords.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = randomWords.txt; sourceTree = "<group>"; };
 		6E7C9A8C219CA1FC00548780 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		6E89EA47219C240A00F7E7CC /* Anagrams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Anagrams.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +69,7 @@
 				6E89EA4A219C240A00F7E7CC /* AppDelegate.swift */,
 				6E89EA4E219C240A00F7E7CC /* Main.storyboard */,
 				6E89EA5E219C249A00F7E7CC /* MainGameTableViewController.swift */,
+				6E36BEB6219F3D33008A03FE /* Language.swift */,
 				6E89EA5C219C248A00F7E7CC /* WordSelectionTableViewController.swift */,
 				6E7C9A8C219CA1FC00548780 /* Settings.swift */,
 				6E89EA60219C257B00F7E7CC /* HighscoreCounter.swift */,
@@ -154,6 +157,7 @@
 				6E7C9A8D219CA1FC00548780 /* Settings.swift in Sources */,
 				6E89EA5D219C248A00F7E7CC /* WordSelectionTableViewController.swift in Sources */,
 				6E89EA61219C257B00F7E7CC /* HighscoreCounter.swift in Sources */,
+				6E36BEB7219F3D33008A03FE /* Language.swift in Sources */,
 				6E89EA4B219C240A00F7E7CC /* AppDelegate.swift in Sources */,
 				6E89EA5F219C249A00F7E7CC /* MainGameTableViewController.swift in Sources */,
 				6E89EA63219C386300F7E7CC /* Highscore.swift in Sources */,

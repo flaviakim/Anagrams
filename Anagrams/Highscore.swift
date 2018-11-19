@@ -13,6 +13,7 @@ class Highscore: NSObject, NSCoding {
 	// MARK: Data
 	
 	let word: String
+	let language: Language
 	private(set) var score: Int
 	private(set) var player: String
 	
@@ -20,10 +21,11 @@ class Highscore: NSObject, NSCoding {
 	
 	// MARK: Initialiser
 	
-	init(word: String, score: Int, player: String) {
+	init(word: String, score: Int, player: String, language: Language = Language.getDefaultLanguage()) {
 		self.word = word
 		self.score = score
 		self.player = player
+		self.language = language
 	}
 	
 	
@@ -33,6 +35,7 @@ class Highscore: NSObject, NSCoding {
 		self.word = aDecoder.decodeObject(forKey: "word") as! String
 		self.score = aDecoder.decodeInteger(forKey: "score")
 		self.player = aDecoder.decodeObject(forKey: "player") as! String
+		self.language = Language.getLanguageFrom(shortWord: (aDecoder.decodeObject(forKey: "language") as! String)) ?? Language.getDefaultLanguage()
 		self.guessedWords = aDecoder.decodeObject(forKey: "guessedWords") as? [String: [String]] ?? [String: [String]]()
 		// TODO: Save guessedWords correctly
 	}
@@ -41,6 +44,7 @@ class Highscore: NSObject, NSCoding {
 		aCoder.encode(word, forKey: "word")
 		aCoder.encode(score, forKey: "score")
 		aCoder.encode(player, forKey: "player")
+		aCoder.encode(language.shortWord, forKey: "language")
 		aCoder.encode(guessedWords, forKey: "guessedWords")
 	}
 	

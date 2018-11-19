@@ -8,11 +8,13 @@
 
 import UIKit
 
-class WordSelectionTableViewController: UITableViewController {
+class WordSelectionTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 	
 	//MARK: Properties
 	
 	private(set) var highscoreCounter: HighscoreCounter?
+	let newWordSection = 0
+	let savedWordsSection = 1
 	
 	let settings = Settings()
 	
@@ -124,15 +126,14 @@ class WordSelectionTableViewController: UITableViewController {
 	
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		if section == 0 {
+		if section == newWordSection {
 			return 2
-		} else {
-			return highscoreCounter!.getNumberOfHighscores()
 		}
+		return highscoreCounter!.getNumberOfHighscores()
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		if indexPath.section == 0 {
+		if indexPath.section == newWordSection {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "NewWordCell", for: indexPath)
 			if indexPath.row == 0 {
 				cell.textLabel?.text = "New Random Word"
@@ -141,7 +142,7 @@ class WordSelectionTableViewController: UITableViewController {
 			}
 			return cell
 			
-		} else if indexPath.section == 1 {
+		} else if indexPath.section == savedWordsSection {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "WordSelectionCell", for: indexPath)
 			if let hs = highscoreCounter!.getHighscore(at: indexPath.row) {
 				cell.textLabel?.text = hs.word
@@ -157,13 +158,12 @@ class WordSelectionTableViewController: UITableViewController {
 			return cell
 			
 		}
-		print("ERROR WordSelectionTableViewController::cellForRowAt")
+		print("ERROR: WordSelectionTableViewController::cellForRowAt")
 		return UITableViewCell(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		performSegue(withIdentifier: "MainGameTVC", sender: self)
-		
 	}
 	
 	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -201,6 +201,26 @@ class WordSelectionTableViewController: UITableViewController {
 	*/
 	
 	
+	// MARK: Picker View Data and Delegate
+	// Not currently used, but might switch from automatic language detection to either asking the player always or when the custom word is unused.
+	
+	func numberOfComponents(in pickerView: UIPickerView) -> Int {
+		return 1
+	}
+	
+	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+		return Language.allLanguages.count
+	}
+	
+	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+		return Language.allLanguages[row].longWord
+	}
+	
+	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+		//language = Language.allLanguages[row]
+	}
+	
+	
 	// MARK: - Navigation
 	
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -213,7 +233,7 @@ class WordSelectionTableViewController: UITableViewController {
 						if indexPath.row == 0 {
 							mainGameVC.title = getRandomWord()
 						} else if indexPath.row == 1 {
-							// if we don't set the title of the mainGameVC it should ask the user automaticaly so we don't do anything.
+							// if we don't set the title of the mainGameVC it should ask the player automaticaly so we don't do anything.
 						}
 						mainGameVC.isNewWord = true
 					} else if indexPath.section == 1 {
@@ -221,6 +241,7 @@ class WordSelectionTableViewController: UITableViewController {
 						mainGameVC.title = hs.word
 						mainGameVC.oldHighscore = hs
 						mainGameVC.isNewWord = false
+						mainGameVC.language = hs.language
 					}
 				}
 			}

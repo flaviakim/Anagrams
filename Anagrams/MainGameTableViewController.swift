@@ -205,13 +205,11 @@ class MainGameTableViewController: UITableViewController {
 	}
 	
 	private func isReal(word: String) -> Bool {
-		let lowercasedWord = word.lowercased()
 		let checker = UITextChecker()
 		let range = NSMakeRange(0, word.utf16.count)
-		let misspelledRangeLower = checker.rangeOfMisspelledWord(in: lowercasedWord, range: range, startingAt: 0, wrap: false, language: language.shortWord)
-		let misspelledRangeUpper = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: language.shortWord)
+		let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: language.shortWord)
 		
-		return misspelledRangeLower.location == NSNotFound || misspelledRangeUpper.location == NSNotFound
+		return misspelledRange.location == NSNotFound
 	}
 	
 	private func isLongEnough(word: String) -> Bool {

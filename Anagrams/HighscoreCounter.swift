@@ -68,7 +68,6 @@ class HighscoreCounter: NSObject, NSCoding {
 	func addHighscore(word: String, score: Int, player: String, language: Language = Language.getDefaultLanguage()) {
 		if let oldHighscore = getHighscoreFor(word: word) {
 			oldHighscore.updateHighscore(player: player, score: score)
-			print("WARNING: Switch to updateHighscore instead of this function if you want to update the highscore!")
 			//TODO: sort the updated highscore.
 		} else {
 			highscores.append(Highscore(word: word, score: score, player: player, language: language))

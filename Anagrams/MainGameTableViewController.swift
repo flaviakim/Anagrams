@@ -120,6 +120,7 @@ class MainGameTableViewController: UITableViewController {
 		if answer.isEmpty {
 			return
 		}
+		let answer = answer.lowercased()
 		
 		if isPossible(word: answer) {
 			if isOriginal(word: answer) {

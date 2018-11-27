@@ -12,6 +12,7 @@ class MainGameTableViewController: UITableViewController {
 	
 	var wordSelectionTVC: WordSelectionTableViewController?
 	var isNewWord: Bool!
+	var newHighscoreAnounced = false
 	var oldHighscore: Highscore?
 	var settings: Settings? {
 		return wordSelectionTVC?.settings
@@ -168,8 +169,9 @@ class MainGameTableViewController: UITableViewController {
 			wordSelectionTVC!.highscoreCounter!.addHighscore(word: word, score: score, player: player, language: language)
 		} else {
 			if newHighscore != nil {
-				if newHighscore == oldHighscore!.score + 1 {
+				if !newHighscoreAnounced {
 					congratulateAboutNewHighscore()
+					newHighscoreAnounced = true
 				}
 				wordSelectionTVC!.highscoreCounter!.updateHighscore(word: word, score: score, player: player)
 			}
